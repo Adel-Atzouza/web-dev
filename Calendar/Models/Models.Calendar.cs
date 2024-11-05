@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Calendar.Models
 {
     public class User
@@ -37,7 +35,7 @@ namespace Calendar.Models
         public string LastName { get; set; }
     }
 
-    [JsonIgnore]
+
     public class EventReviewRequest{
         public int UserId {get;set;}
         public int EventId {get; set;}

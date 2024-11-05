@@ -29,6 +29,10 @@ namespace Calendar
             // Registreren van services
             builder.Services.AddScoped<ILoginService, LoginService>();
             builder.Services.AddScoped<EventAttendanceService>();
+            builder.Services.AddScoped<RecommendationService>();
+
+            
+            
 
             // Configureer de databasecontext met SQLite
             builder.Services.AddDbContext<DatabaseContext>(
