@@ -9,7 +9,7 @@ namespace Calendar.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RecommendationsController : ControllerBase
+    public class RecommendationsController : Controller
     {
         private readonly RecommendationService _recommendationsService;
 
