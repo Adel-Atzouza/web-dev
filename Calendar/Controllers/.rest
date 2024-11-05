@@ -1,0 +1,15 @@
+@accessToken=CfDJ8ImXszyIaTNCjMAyBL9Phx9abPYbbNsRF1I5GRnhmRvKR0vSq-ZbA78NnipehYu8QmaN8GwwFeYKO2t7-VIaCP8EWLyvyFSQYA7u1axyFAirJHpZzqETxUZ5v4XG9oSVrVOJj-GMmiPiP0O1SGkA-Qf3503rL_xchGa8Y7e3WLL3MW4A2COVgk_13K-OgxBNuQnLL59xcwL68GWyHm1s-FoYh_uop5ZTYfs1_uD3b0KZ_oLxReGQ32cw11ksF13vU1ljZk7HW3a13dOJTPWgyNl6ORYs3EJ2JPITHe162m5opur7myG8492aSkp3RP_kp0Re-AZc92bmUE3jZf3W_OOMS5h7h1IKIEMTi_7igJpdEuvmRsbfP1l82MUIcdxE055Bs4POdPIGF2lm0Y4mu-jo0TjZmY-kxvXCyFA2m0XXggmsQXhv82Z4HM_Hid4CqgTQ_iRgz7cg77t8wSQXb8IUqJA55wCe0SC9bThvRJn4iSMHC3LWdHdI8VCKh3rPfDlQ7YWopaTdE8g8aULGBSynf1t0ks15-HOVnHsgMH-0J4AJrzdDe8uLLeMIcfcTapq2lAn4d3aJVYz0Fj7EkCe-vkTbtp_b8u7fXcYqG2iHi_MowmBDarQfLOrAXZ8e064SFYdiBuasEN9-jMED1Sleklim3XwIYW5Er9t8WuGMhBJb86yrjnYUfzOI0eCy5g
+
+POST http://localhost:5097/Attendance
+Content-Type: application/json
+
+{
+    "AttendanceDate": "2024-11-05T00:00:00Z",
+    "UserId": 1
+}
+
+###
+
+DELETE http://localhost:5097/Attendance/11
+Content-Type: application/json
+
