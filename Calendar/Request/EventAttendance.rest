@@ -24,6 +24,22 @@ Content-Type: application/json
     "eventId": 1
 }
 
-###
+###### Submit Review for Event
+POST http://localhost:3000/api/EventAttendance/SubmitReview
+Content-Type: application/json
 
-###
+{
+    "userId": 1,
+    "eventId": 1,
+    "rating": 5,
+    "feedback": "This event was fantastic!"
+}
+
+### Attend Event (Deelname aan evenement)
+POST http://localhost:3000/api/EventAttendance/Attend
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "eventId": 2
+}

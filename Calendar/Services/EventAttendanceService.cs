@@ -11,90 +11,92 @@ namespace Calendar.Services
     {
         private readonly DatabaseContext _context;
 
-        // Constructor that injects the database context (DatabaseContext)
+        // Constructor to initialize the database context
         public EventAttendanceService(DatabaseContext context)
         {
             _context = context;
         }
 
         // Method for a user to attend an event
-    public async Task<string> AttendEvent(int userId, int eventId)
-    {
-        // Fetch the event by its ID from the database
-        var eventToAttend = await _context.Event.FirstOrDefaultAsync(e => e.EventId == eventId);
-
-        // Check if the event exists
-        if (eventToAttend == null)
+        public async Task<string> AttendEvent(int userId, int eventId)
         {
-            return "Event not found.";
+            // Fetch the event by its ID from the database
+            var eventToAttend = await _context.Event.FirstOrDefaultAsync(e => e.EventId == eventId);
+
+            // Check if the event exists
+            if (eventToAttend == null)
+            {
+                return "Event not found."; // Event doesn't exist in the database
+            }
+
+            // Fetch the user by ID
+            var user = await _context.User.FirstOrDefaultAsync(u => u.UserId == userId);
+
+            // Check if the user exists
+            if (user == null)
+            {
+                return "User not found."; // User doesn't exist in the database
+            }
+
+            // Check if the event has already started
+            var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            if (eventToAttend.EventDate < currentDate || 
+                (eventToAttend.EventDate == currentDate && eventToAttend.StartTime < DateTime.UtcNow.TimeOfDay))
+            {
+                return "Event has already started."; // Too late to attend the event
+            }
+
+            // Check event availability (based on max attendees)
+            int currentAttendees = await _context.Event_Attendance.CountAsync(ea => ea.Event.EventId == eventId);
+            if (currentAttendees >= eventToAttend.MaxAttendees)
+            {
+                return "Event is full."; // No spots left
+            }
+
+            // Check if the user is already attending
+            var existingAttendance = await _context.Event_Attendance
+                .FirstOrDefaultAsync(ea => ea.Event.EventId == eventId && ea.User.UserId == userId);
+            if (existingAttendance != null)
+            {
+                return "You are already attending this event."; // Prevent duplicate attendance
+            }
+
+            // Register the attendance
+            var attendance = new Event_Attendance
+            {
+                User = user,
+                Event = eventToAttend,
+                Feedback = "", // Empty feedback initially
+                Rating = 0     // No rating initially
+            };
+
+            _context.Event_Attendance.Add(attendance); // Add attendance to the database
+            await _context.SaveChangesAsync(); // Save the changes
+
+            return "Attendance confirmed."; // Successful attendance
         }
 
-        // Fetch the user by ID
-        var user = await _context.User.FirstOrDefaultAsync(u => u.UserId == userId);
-
-        // Check if the user exists
-        if (user == null)
+        // Method for submitting a review for an event the user attended
+        [HttpPost("SubmitReview")]
+        public async Task<string> SubmitReview(int userId, int eventId, int rating, string feedback)
         {
-            return "User not found.";
+            // Check if the user attended the event
+            var attendance = await _context.Event_Attendance.FirstOrDefaultAsync(ea => ea.User.UserId == userId && ea.Event.EventId == eventId);
+
+            if (attendance == null)
+            {
+                return "Attendance not found. User did not attend this event."; // Can't review without attending
+            }
+
+            // Update rating and feedback
+            attendance.Rating = rating;
+            attendance.Feedback = feedback;
+
+            await _context.SaveChangesAsync(); // Save the review
+            return "Review has been submitted"; // Success message
         }
 
-        // Check if the event has already started
-        var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        if (eventToAttend.EventDate < currentDate || 
-        (eventToAttend.EventDate == currentDate && eventToAttend.StartTime < DateTime.UtcNow.TimeOfDay))
-        {
-            return "Event has already started.";
-        }
-
-        // Check event availability
-        int currentAttendees = await _context.Event_Attendance.CountAsync(ea => ea.Event.EventId == eventId);
-        if (currentAttendees >= eventToAttend.MaxAttendees)
-        {
-            return "Event is full.";
-        }
-
-        // Check if the user is already attending the event
-        var existingAttendance = await _context.Event_Attendance
-            .FirstOrDefaultAsync(ea => ea.Event.EventId == eventId && ea.User.UserId == userId);
-        if (existingAttendance != null)
-        {
-            return "You are already attending this event.";
-        }
-
-        // Register the attendance
-        var attendance = new Event_Attendance
-        {
-            User = user,
-            Event = eventToAttend,
-            Feedback = "", // Initialize feedback as empty
-            Rating = 0     // Initialize rating to 0
-        };
-
-        _context.Event_Attendance.Add(attendance);
-        await _context.SaveChangesAsync();
-
-        return "Attendance confirmed.";
-    }
-
-    [HttpPost("SubmitReview")]
-    public async Task<string> SubmitReview(int userId, int eventId, int rating, string feedback)
-    {
-        var attendance = await _context.Event_Attendance.FirstOrDefaultAsync(ea => ea.User.UserId == userId && ea.Event.EventId == eventId);
-
-        if (attendance == null)
-        {
-            return "attendance not found. user did not attend";
-        }
-
-        attendance.Rating = rating;
-        attendance.Feedback = feedback;
-
-        await _context.SaveChangesAsync();
-        return "review has been submitted";
-    }
-
-
-        // Method to get all attendees of a specific event
+        // Method to get a list of attendees for a specific event
         public async Task<List<AttendeeDtogetattendees>> GetEventAttendees(int eventId)
         {
             return await _context.Event_Attendance
@@ -104,32 +106,27 @@ namespace Calendar.Services
                     FirstName = ea.User.FirstName,
                     LastName = ea.User.LastName
                 })
-                .ToListAsync();
+                .ToListAsync(); // Return a list of attendee names only
         }
-
-
 
         // Method to cancel a user's attendance at an event
         public async Task<string> CancelAttendance(int userId, int eventId)
         {
-            // Step 1: Locate the attendance record in the database
-            // Find the specific record that matches both the user and event
+            // Locate the attendance record based on user and event IDs
             var attendance = await _context.Event_Attendance
                 .FirstOrDefaultAsync(ea => ea.User.UserId == userId && ea.Event.EventId == eventId);
 
-            // Step 2: Check if the attendance record exists
-            // If the record is not found, return an error message
+            // Check if the attendance record exists
             if (attendance == null)
             {
-                return "Attendance not found.";
+                return "Attendance not found."; // No attendance found to cancel
             }
 
-            // Step 3: Remove the attendance record from the database
-            // Deletes the record and commits the change to cancel attendance
+            // Remove the attendance record
             _context.Event_Attendance.Remove(attendance);
             await _context.SaveChangesAsync(); // Save changes to finalize cancellation
 
-            return "Attendance canceled.";
+            return "Attendance canceled."; // Confirmation message
         }
     }
 }

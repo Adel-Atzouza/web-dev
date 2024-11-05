@@ -20,7 +20,7 @@ namespace Calendar.Controllers
 
         // Endpoint to get recommendations based on categories of attended events
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetRecommendations(int userId)
+        public async Task<IActionResult> GetRecommendations([FromQuery]int userId)
         {
             // Fetch recommendations for the user
             var recommendations = await _recommendationsService.GetRecommendations(userId);
