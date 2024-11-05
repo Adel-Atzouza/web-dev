@@ -1,0 +1,9 @@
+*.db
+bin
+obj
+wwwroot/js
+Calendar.db-shm
+Calendar.db-wal
+Calendar.sqlite
+Calendar.sqlite-shm
+Calendar.sqlite-wal
