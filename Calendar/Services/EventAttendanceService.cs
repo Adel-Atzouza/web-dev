@@ -18,7 +18,8 @@ namespace Calendar.Services
 
         // Method for a user to attend an event
         public async Task<string> AttendEvent(int userId, int eventId)
-        {
+        {   
+            Console.WriteLine($"Searching for Event with ID: {eventId}");
             // Step 1: Fetch the event by its ID from the database
             var eventToAttend = await _context.Event.FirstOrDefaultAsync(e => e.EventId == eventId);
 
@@ -65,6 +66,7 @@ namespace Calendar.Services
                 Rating = 0     // Initialize rating to 0; rating may be updated after the event
             };
 
+            
             // Add the new attendance record to the database
             _context.Event_Attendance.Add(attendance);
             await _context.SaveChangesAsync(); // Save changes to make attendance official

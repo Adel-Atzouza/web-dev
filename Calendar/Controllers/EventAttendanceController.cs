@@ -20,9 +20,9 @@ namespace Calendar.Controllers
 
         // POST: api/EventAttendance/Attend
         [HttpPost("Attend")]
-        public async Task<IActionResult> AttendEvent([FromQuery] int userId, [FromQuery] int eventId)
+        public async Task<IActionResult> AttendEvent([FromBody] EventAttendanceRequest request)
         {
-            var result = await _attendanceService.AttendEvent(userId, eventId);
+            var result = await _attendanceService.AttendEvent(request.UserId, request.EventId);
 
             return result switch
             {

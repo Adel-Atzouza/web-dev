@@ -38,6 +38,15 @@ namespace Calendar.Models
         public required Event Event { get; set; }
     }
 
+
+        public class EventAttendanceRequest
+        {
+            public int UserId { get; set; }
+            public int EventId { get; set; }
+        }
+
+
+
     public class Event
     {
         public int EventId { get; set; }
