@@ -35,7 +35,7 @@ namespace Calendar.Controllers
 
         // GET: api/EventAttendance/Attendees/{eventId}
         [HttpGet("Attendees/{eventId}")]
-        [Authorize] // Only allow authorized users to access
+        // Only allow authorized users to access
         public async Task<IActionResult> GetEventAttendees(int eventId)
         {
             var attendees = await _attendanceService.GetEventAttendees(eventId);

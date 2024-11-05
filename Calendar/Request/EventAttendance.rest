@@ -10,13 +10,12 @@ Content-Type: application/json
 ###
 
 ### Get Event Attendees
-GET http://localhost:5000/api/EventAttendance/Attendees/10
-Authorization: Bearer your_jwt_token_here
+GET http://localhost:3000/api/EventAttendance/Attendees/10
 
 ###
 
 ### Cancel Attendance
-DELETE http://localhost:5000/api/EventAttendance/Cancel
+DELETE http://localhost:3000/api/EventAttendance/Cancel
 Content-Type: application/json
 Authorization: Bearer your_jwt_token_here
 
