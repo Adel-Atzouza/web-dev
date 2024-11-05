@@ -13,7 +13,7 @@ namespace Calendar
 
             // Voeg controller ondersteuning toe met JSON opties om circular references te voorkomen
             builder.Services.AddControllersWithViews().AddJsonOptions(options =>
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
 
             // Configureer distributed cache voor sessies
             builder.Services.AddDistributedMemoryCache();
