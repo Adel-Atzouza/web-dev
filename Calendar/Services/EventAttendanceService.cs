@@ -17,62 +17,64 @@ namespace Calendar.Services
         }
 
         // Method for a user to attend an event
-        public async Task<string> AttendEvent(int userId, int eventId)
-        {   
-            Console.WriteLine($"Searching for Event with ID: {eventId}");
-            // Step 1: Fetch the event by its ID from the database
-            var eventToAttend = await _context.Event.FirstOrDefaultAsync(e => e.EventId == eventId);
+    public async Task<string> AttendEvent(int userId, int eventId)
+    {
+        // Fetch the event by its ID from the database
+        var eventToAttend = await _context.Event.FirstOrDefaultAsync(e => e.EventId == eventId);
 
-            // Step 2: Check if the event exists
-            // If the event is not found, return an error message
-            if (eventToAttend == null)
-            {
-                return "Event not found.";
-            }
-
-            // Step 3: Check if the event has already started
-            // Convert current date and time
-            var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            if (eventToAttend.EventDate < currentDate || 
-               (eventToAttend.EventDate == currentDate && eventToAttend.StartTime < DateTime.UtcNow.TimeOfDay))
-            {
-                return "Event has already started.";
-            }
-
-            // Step 4: Check event availability
-            // Query the number of attendees for this event
-            int currentAttendees = await _context.Event_Attendance.CountAsync(ea => ea.Event.EventId == eventId);
-            if (eventToAttend.Event_Attendances.Count >= eventToAttend.MaxAttendees)
-            {
-                return "Event is full.";
-            }
-
-            // Step 5: Check if the user is already attending the event
-            // Prevents duplicate attendance records for the same event and user
-            var existingAttendance = await _context.Event_Attendance
-                .FirstOrDefaultAsync(ea => ea.Event.EventId == eventId && ea.User.UserId == userId);
-            if (existingAttendance != null)
-            {
-                return "You are already attending this event.";
-            }
-
-            // Step 6: Register the attendance
-            // Create a new Event_Attendance record to log the user's attendance at the event
-            var attendance = new Event_Attendance
-            {
-                User = await _context.User.FirstOrDefaultAsync(u => u.UserId == userId),
-                Event = eventToAttend,
-                Feedback = "", // Initialize feedback as an empty string, as feedback might be added after the event
-                Rating = 0     // Initialize rating to 0; rating may be updated after the event
-            };
-
-            
-            // Add the new attendance record to the database
-            _context.Event_Attendance.Add(attendance);
-            await _context.SaveChangesAsync(); // Save changes to make attendance official
-
-            return "Attendance confirmed.";
+        // Check if the event exists
+        if (eventToAttend == null)
+        {
+            return "Event not found.";
         }
+
+        // Fetch the user by ID
+        var user = await _context.User.FirstOrDefaultAsync(u => u.UserId == userId);
+
+        // Check if the user exists
+        if (user == null)
+        {
+            return "User not found.";
+        }
+
+        // Check if the event has already started
+        var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
+        if (eventToAttend.EventDate < currentDate || 
+        (eventToAttend.EventDate == currentDate && eventToAttend.StartTime < DateTime.UtcNow.TimeOfDay))
+        {
+            return "Event has already started.";
+        }
+
+        // Check event availability
+        int currentAttendees = await _context.Event_Attendance.CountAsync(ea => ea.Event.EventId == eventId);
+        if (currentAttendees >= eventToAttend.MaxAttendees)
+        {
+            return "Event is full.";
+        }
+
+        // Check if the user is already attending the event
+        var existingAttendance = await _context.Event_Attendance
+            .FirstOrDefaultAsync(ea => ea.Event.EventId == eventId && ea.User.UserId == userId);
+        if (existingAttendance != null)
+        {
+            return "You are already attending this event.";
+        }
+
+        // Register the attendance
+        var attendance = new Event_Attendance
+        {
+            User = user,
+            Event = eventToAttend,
+            Feedback = "", // Initialize feedback as empty
+            Rating = 0     // Initialize rating to 0
+        };
+
+        _context.Event_Attendance.Add(attendance);
+        await _context.SaveChangesAsync();
+
+        return "Attendance confirmed.";
+    }
+
 
         // Method to get all attendees of a specific event
         public async Task<List<Event_Attendance>> GetEventAttendees(int eventId)
