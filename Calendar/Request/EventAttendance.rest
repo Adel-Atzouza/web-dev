@@ -1,0 +1,28 @@
+### Attend Event
+POST http://localhost:3000/api/EventAttendance/Attend
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "eventId": 10
+}
+
+###
+
+### Get Event Attendees
+GET http://localhost:5000/api/EventAttendance/Attendees/10
+Authorization: Bearer your_jwt_token_here
+
+###
+
+### Cancel Attendance
+DELETE http://localhost:5000/api/EventAttendance/Cancel
+Content-Type: application/json
+Authorization: Bearer your_jwt_token_here
+
+{
+    "userId": 1,
+    "eventId": 10
+}
+
+###

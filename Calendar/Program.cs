@@ -10,10 +10,13 @@ namespace Calendar
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Voeg controller ondersteuning toe
             builder.Services.AddControllersWithViews();
 
+            // Configureer distributed cache voor sessies
             builder.Services.AddDistributedMemoryCache();
 
+            // Configureer sessie-instellingen
             builder.Services.AddSession(options => 
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
@@ -21,18 +24,20 @@ namespace Calendar
                 options.Cookie.IsEssential = true; 
             });
 
+            // Registreren van services
             builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<EventAttendanceService>(); // Voeg deze regel toe
 
+            // Configureer de databasecontext met SQLite
             builder.Services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configureer de HTTP request pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -40,17 +45,18 @@ namespace Calendar
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.Urls.Add("http://localhost:3000");
 
             app.UseAuthorization();
 
             app.UseSession();
 
+            // Stel de standaard route in
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
-
         }
     }
 }
