@@ -30,7 +30,7 @@ namespace Calendar.Services
 
             // Check if the event has already started
             var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            if (eventToAttend.EventDate < currentDate || eventToAttend.EventDate == currentDate && eventToAttend.StartTime < DateTime.UtcNow.TimeOfDay)
+            if (eventToAttend.EventDate < currentDate || (eventToAttend.EventDate == currentDate && eventToAttend.StartTime < DateTime.UtcNow.TimeOfDay))
             {
                 return "Event has already started.";
             }
