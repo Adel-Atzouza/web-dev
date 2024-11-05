@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using CalendarProject.Services;
+using Calendar.Services;
 using Calendar.Models;
 using Microsoft.AspNetCore.Authorization;
 
