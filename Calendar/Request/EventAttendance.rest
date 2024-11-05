@@ -1,27 +1,33 @@
-### Attend Event
-POST http://localhost:3000/api/EventAttendance/Attend
+### Attend Event (Add Attendance)
+POST http://localhost:3000/api/Attendance/Add
 Content-Type: application/json
 
 {
-    "userId": 1,
-    "eventId": 10
+    "attendanceId": 1,
+    "attendanceDate": "2024-11-01",
+    "userId": 1
 }
 
 ###
 
-### Get Event Attendees
-GET http://localhost:3000/api/EventAttendance/Attendees/10
+### Get Attendance by User ID
+GET http://localhost:3000/api/Attendance/User/1
 
 ###
 
-### Cancel Attendance
-DELETE http://localhost:3000/api/EventAttendance/Cancel
+### Get All Attendances
+GET http://localhost:3000/api/Attendance/All
+Authorization: Bearer your_jwt_token_here
+
+###
+
+### Delete Attendance
+DELETE http://localhost:3000/api/Attendance/Delete
 Content-Type: application/json
 Authorization: Bearer your_jwt_token_here
 
 {
-    "userId": 1,
-    "eventId": 10
+    "attendanceId": 1
 }
 
 ###
