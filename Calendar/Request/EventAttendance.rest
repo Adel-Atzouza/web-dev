@@ -45,13 +45,13 @@ Content-Type: application/json
 }
 
 ### Get Event Recommendations for a User
-GET http://localhost:3000/api/Recommendations/1
+GET http://localhost:3000/api/recommendations/3
 Accept: application/json
 
 ###
 
 ### Get Event Recommendations for a Different User
-GET http://localhost:3000/api/Recommendations/2
+GET http://localhost:3000/api/Recommendations/1
 Accept: application/json
 
 ###
