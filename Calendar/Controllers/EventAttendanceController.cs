@@ -48,9 +48,9 @@ namespace Calendar.Controllers
 
         // DELETE: api/EventAttendance/Cancel
         [HttpDelete("Cancel")]
-        public async Task<IActionResult> CancelAttendance([FromQuery] int userId, [FromQuery] int eventId)
+        public async Task<IActionResult> CancelAttendance([FromBody] EventAttendanceRequest request)
         {
-            var result = await _attendanceService.CancelAttendance(userId, eventId);
+            var result = await _attendanceService.CancelAttendance(request.UserId, request.EventId);
 
             return result == "Attendance not found." ? NotFound(result) : Ok(result); // "Attendance canceled."
         }

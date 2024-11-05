@@ -77,22 +77,18 @@ namespace Calendar.Services
 
 
         // Method to get all attendees of a specific event
-        public async Task<string> GetEventAttendees(int eventId)
+        public async Task<List<AttendeeDto>> GetEventAttendees(int eventId)
         {
-            var attendees = await _context.Event_Attendance
+            return await _context.Event_Attendance
                 .Where(ea => ea.Event.EventId == eventId)
-                .Select(ea => new 
+                .Select(ea => new AttendeeDto
                 {
                     FirstName = ea.User.FirstName,
                     LastName = ea.User.LastName
                 })
                 .ToListAsync();
-
-            if (!attendees.Any())
-                return NotFound("No attendees found for this event.");
-
-            return attendees;
         }
+
 
 
         // Method to cancel a user's attendance at an event
