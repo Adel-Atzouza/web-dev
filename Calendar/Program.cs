@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Calendar.Models;
 using Calendar.Services;
+using System.Text.Json.Serialization; // Add this for ReferenceHandler
 
 namespace Calendar
 {
@@ -10,8 +11,9 @@ namespace Calendar
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Voeg controller ondersteuning toe
-            builder.Services.AddControllersWithViews();
+            // Voeg controller ondersteuning toe met JSON opties om circular references te voorkomen
+            builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             // Configureer distributed cache voor sessies
             builder.Services.AddDistributedMemoryCache();
@@ -26,7 +28,7 @@ namespace Calendar
 
             // Registreren van services
             builder.Services.AddScoped<ILoginService, LoginService>();
-            builder.Services.AddScoped<EventAttendanceService>(); // Voeg deze regel toe
+            builder.Services.AddScoped<EventAttendanceService>();
 
             // Configureer de databasecontext met SQLite
             builder.Services.AddDbContext<DatabaseContext>(
