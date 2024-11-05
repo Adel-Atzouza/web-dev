@@ -47,8 +47,6 @@ public class LoginController : Controller
         {
             return Ok(adminLoggedIn);
         }
-        return Unauthorized("You are not logged in");
-    }
 
     [HttpGet("Logout")]
     public IActionResult Logout()
@@ -58,6 +56,7 @@ public class LoginController : Controller
             return Unauthorized("You are not logged in");
         }
         HttpContext.Session.Remove(ADMIN_SESSION_KEY.adminLoggedIn.ToString());
+        
         return Ok("Logged out");
     }
 
@@ -68,3 +67,4 @@ public class LoginBody
     public string? Username { get; set; }
     public string? Password { get; set; }
 }
+
