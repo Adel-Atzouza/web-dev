@@ -56,6 +56,10 @@ namespace Calendar.Models
 
         public bool AdminApproval { get; set; }
 
+        public string? Category {get; set;}
+
         public required List<Event_Attendance> Event_Attendances { get; set; }
+
+        public int MaxAttendees {get; set;}
     }
 }
