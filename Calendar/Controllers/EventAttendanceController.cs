@@ -33,6 +33,19 @@ namespace Calendar.Controllers
             };
         }
 
+        [HttpPost("SubmitReview")]
+        public async Task<IActionResult> SubmitReview([FromBody] EventReviewRequest request)
+        {
+            var result = await _attendanceService.SubmitReview(request.UserId, request.EventId, request.Rating, request.Feedback);
+
+            if (result == "Attendance not found. User did not attend this event.")
+                return NotFound(result);
+
+            return Ok(result); // "Review submitted successfully."
+        }
+
+
+
         // GET: api/EventAttendance/Attendees/{eventId}
         [HttpGet("Attendees/{eventId}")]
         // Only allow authorized users to access

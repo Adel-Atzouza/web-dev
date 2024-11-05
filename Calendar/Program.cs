@@ -45,7 +45,7 @@ namespace Calendar
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.MapControllers();
             app.UseRouting();
             app.Urls.Add("http://localhost:3000");
 

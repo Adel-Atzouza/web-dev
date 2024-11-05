@@ -29,11 +29,18 @@ namespace Calendar.Models
         public required User User { get; set; }
     }
 
-    public class AttendeeDto
-{
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-}
+    public class AttendeeDtogetattendees
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+
+    public class EventReviewRequest{
+        public int UserId {get;set;}
+        public int EventId {get; set;}
+        public int Rating {get; set;}
+        public string? Feedback {get; set;}
+    }
 
 
     public class Event_Attendance

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Calendar.Services
 {
@@ -75,13 +76,30 @@ namespace Calendar.Services
         return "Attendance confirmed.";
     }
 
+    [HttpPost("SubmitReview")]
+    public async Task<string> SubmitReview(int userId, int eventId, int rating, string feedback)
+    {
+        var attendance = await _context.Event_Attendance.FirstOrDefaultAsync(ea => ea.User.UserId == userId && ea.Event.EventId == eventId);
+
+        if (attendance == null)
+        {
+            return "attendance not found. user did not attend";
+        }
+
+        attendance.Rating = rating;
+        attendance.Feedback = feedback;
+
+        await _context.SaveChangesAsync();
+        return "review has been submitted";
+    }
+
 
         // Method to get all attendees of a specific event
-        public async Task<List<AttendeeDto>> GetEventAttendees(int eventId)
+        public async Task<List<AttendeeDtogetattendees>> GetEventAttendees(int eventId)
         {
             return await _context.Event_Attendance
                 .Where(ea => ea.Event.EventId == eventId)
-                .Select(ea => new AttendeeDto
+                .Select(ea => new AttendeeDtogetattendees
                 {
                     FirstName = ea.User.FirstName,
                     LastName = ea.User.LastName
