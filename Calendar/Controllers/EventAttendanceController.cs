@@ -22,7 +22,7 @@ namespace Calendar.Controllers
         [HttpPost("Attend")]
         public async Task<IActionResult> AttendEvent([FromQuery] int userId, [FromQuery] int eventId)
         {
-            var result = await _attendanceService.AttendEventAsync(userId, eventId);
+            var result = await _attendanceService.AttendEvent(userId, eventId);
 
             return result switch
             {
@@ -38,7 +38,7 @@ namespace Calendar.Controllers
         [Authorize] // Only allow authorized users to access
         public async Task<IActionResult> GetEventAttendees(int eventId)
         {
-            var attendees = await _attendanceService.GetEventAttendeesAsync(eventId);
+            var attendees = await _attendanceService.GetEventAttendees(eventId);
 
             if (attendees == null || attendees.Count == 0)
                 return NotFound("No attendees found for this event.");
@@ -50,7 +50,7 @@ namespace Calendar.Controllers
         [HttpDelete("Cancel")]
         public async Task<IActionResult> CancelAttendance([FromQuery] int userId, [FromQuery] int eventId)
         {
-            var result = await _attendanceService.CancelAttendanceAsync(userId, eventId);
+            var result = await _attendanceService.CancelAttendance(userId, eventId);
 
             return result == "Attendance not found." ? NotFound(result) : Ok(result); // "Attendance canceled."
         }
