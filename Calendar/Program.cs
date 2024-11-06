@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Calendar.Models;
 using Calendar.Services;
+using System.Text.Json.Serialization; // Add this for ReferenceHandler
 
 namespace Calendar
 {
@@ -10,8 +11,11 @@ namespace Calendar
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllersWithViews();
+            // Voeg controller ondersteuning toe met JSON opties om circular references te voorkomen
+            builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
 
+            // Configureer distributed cache voor sessies
             builder.Services.AddDistributedMemoryCache();
 
             //register the IHttpContextAccessor and ISessionService
@@ -19,6 +23,7 @@ namespace Calendar
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<ILoginService, LoginService>();
 
+            // Configureer sessie-instellingen
             builder.Services.AddSession(options => 
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
@@ -26,36 +31,43 @@ namespace Calendar
                 options.Cookie.IsEssential = true; 
             });
 
+            // Registreren van services
             builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<EventAttendanceService>();
+            builder.Services.AddScoped<RecommendationService>();
 
+            
+            
+
+            // Configureer de databasecontext met SQLite
             builder.Services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("SqlLiteDb")));
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configureer de HTTP request pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.MapControllers();
             app.UseRouting();
+            app.Urls.Add("http://localhost:3000");
 
             app.UseAuthorization();
 
             app.UseSession();
 
+            // Stel de standaard route in
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
-
         }
     }
 }

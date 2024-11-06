@@ -42,6 +42,11 @@ public class LoginController : Controller
     public IActionResult Login([FromBody] LoginBody loginBody)
     {
         // TODO: Implement login method
+        if (HttpContext.Session.GetString(ADMIN_SESSION_KEY.adminLoggedIn.ToString()) != null)
+        {
+            return BadRequest("You are already logged in");
+        }
+
         if (loginBody == null || string.IsNullOrEmpty(loginBody.Username) || string.IsNullOrEmpty(loginBody.Password))
         {
             return BadRequest("Username or password is missing");
@@ -67,10 +72,13 @@ public class LoginController : Controller
         var adminLoggedIn = _sessionService.GetSessionKey(SESSION_KEY.adminLoggedIn.ToString());
         if (adminLoggedIn != null)
         {
-            return Ok(adminLoggedIn);
+            return Ok($"You are logged in as admin user \"{adminLoggedIn}\"");
         }
         return Unauthorized();
 
+    }
+
+        return Unauthorized("You are not logged in");
     }
 
     [HttpGet("Logout")]

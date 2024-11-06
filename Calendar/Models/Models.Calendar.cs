@@ -31,6 +31,21 @@ namespace Calendar.Models
         public required User User { get; set; }
     }
 
+    public class AttendeeDtogetattendees
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+
+
+    public class EventReviewRequest{
+        public int UserId {get;set;}
+        public int EventId {get; set;}
+        public int Rating {get; set;}
+        public string? Feedback {get; set;}
+    }
+
+
     public class Event_Attendance
     {
         public int Event_AttendanceId { get; set; }
@@ -39,6 +54,15 @@ namespace Calendar.Models
         public required User User { get; set; }
         public required Event Event { get; set; }
     }
+
+
+        public class EventAttendanceRequest
+        {
+            public int UserId { get; set; }
+            public int EventId { get; set; }
+        }
+
+
 
     public class Event
     {
@@ -58,7 +82,11 @@ namespace Calendar.Models
 
         public bool AdminApproval { get; set; }
 
+        public string? Category {get; set;}
+
         public required List<Event_Attendance> Event_Attendances { get; set; }
+
+        public int MaxAttendees {get; set;}
     }
 
     /// <summary>
