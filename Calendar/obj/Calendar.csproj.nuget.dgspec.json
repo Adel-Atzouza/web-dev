@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "Z:\\School\\Dev web Adil github\\web-dev\\Calendar\\Calendar.csproj": {}
+    "C:\\Users\\sven\\school\\web-dev\\Calendar\\Calendar.csproj": {}
   },
   "projects": {
-    "Z:\\School\\Dev web Adil github\\web-dev\\Calendar\\Calendar.csproj": {
+    "C:\\Users\\sven\\school\\web-dev\\Calendar\\Calendar.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "Z:\\School\\Dev web Adil github\\web-dev\\Calendar\\Calendar.csproj",
+        "projectUniqueName": "C:\\Users\\sven\\school\\web-dev\\Calendar\\Calendar.csproj",
         "projectName": "Calendar",
-        "projectPath": "Z:\\School\\Dev web Adil github\\web-dev\\Calendar\\Calendar.csproj",
-        "packagesPath": "C:\\Users\\cbr600f0\\.nuget\\packages\\",
-        "outputPath": "Z:\\School\\Dev web Adil github\\web-dev\\Calendar\\obj\\",
+        "projectPath": "C:\\Users\\sven\\school\\web-dev\\Calendar\\Calendar.csproj",
+        "packagesPath": "C:\\Users\\sven\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sven\\school\\web-dev\\Calendar\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\cbr600f0\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\sven\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -35,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -88,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

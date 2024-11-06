@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Calendar.Services;
 using Calendar.Models;
 using Microsoft.AspNetCore.Authorization;
-using Calendar.Attributes;
 
 namespace Calendar.Controllers
 {
@@ -22,7 +21,6 @@ namespace Calendar.Controllers
         // POST: api/EventAttendance/Attend
         // This endpoint lets a user attend an event, validating the event's availability first
         [HttpPost("Attend")]
-        [RoleAuthorize("User")]
         public async Task<IActionResult> AttendEvent([FromBody] EventAttendanceRequest request)
         {
             var result = await _attendanceService.AttendEvent(request.UserId, request.EventId);
@@ -40,7 +38,6 @@ namespace Calendar.Controllers
         // POST: api/EventAttendance/SubmitReview
         // Allows users to submit a review after attending an event
         [HttpPost("SubmitReview")]
-        [RoleAuthorize("User")]
         public async Task<IActionResult> SubmitReview([FromBody] EventReviewRequest request)
         {
             var result = await _attendanceService.SubmitReview(request.UserId, request.EventId, request.Rating, request.Feedback);
@@ -57,7 +54,6 @@ namespace Calendar.Controllers
         // Fetches a list of attendees for a given event
         [HttpGet("Attendees/{eventId}")]
         // Only allow authorized users to access
-        [RoleAuthorize("User")]
         public async Task<IActionResult> GetEventAttendees(int eventId)
         {
             var attendees = await _attendanceService.GetEventAttendees(eventId);
@@ -72,7 +68,6 @@ namespace Calendar.Controllers
         // DELETE: api/EventAttendance/Cancel
         // Cancels a user's attendance at an event
         [HttpDelete("Cancel")]
-        [RoleAuthorize("User")]
         public async Task<IActionResult> CancelAttendance([FromBody] EventAttendanceRequest request)
         {
             var result = await _attendanceService.CancelAttendance(request.UserId, request.EventId);

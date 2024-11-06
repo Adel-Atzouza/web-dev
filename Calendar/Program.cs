@@ -18,11 +18,6 @@ namespace Calendar
             // Configureer distributed cache voor sessies
             builder.Services.AddDistributedMemoryCache();
 
-            //register the IHttpContextAccessor and ISessionService
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            builder.Services.AddScoped<ISessionService, SessionService>();
-            builder.Services.AddScoped<ILoginService, LoginService>();
-
             // Configureer sessie-instellingen
             builder.Services.AddSession(options => 
             {
