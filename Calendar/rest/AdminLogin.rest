@@ -1,4 +1,4 @@
-@base_url = http://localhost:5097
+@base_url = http://localhost:3000
 
 ### 1. Successful Login (Good Input)
 POST {{base_url}}/api/v1/Login/Login
