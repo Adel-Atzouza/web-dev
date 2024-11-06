@@ -1,0 +1,79 @@
+@base_url = http://localhost:3000
+
+### 1. Successful Login (Good Input)
+POST {{base_url}}/api/v1/Login/Login
+Content-Type: application/json
+
+{
+    "username": "admin1",
+    "password": "password"
+}
+
+### Expected response: 200 OK "Login successful"
+
+
+
+### 2. Login with Incorrect Password (Bad Input)
+POST {{base_url}}/api/v1/Login/Login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "wrongpassword"
+}
+
+### Expected response: 401 Unauthorized "Incorrect password"
+
+
+
+### 3. Login with Incorrect Username (Bad Input)
+POST {{base_url}}/api/v1/Login/Login
+Content-Type: application/json
+
+{
+    "username": "wronguser",
+    "password": "password123"
+}
+
+### Expected response: 401 Unauthorized "Incorrect username"
+
+
+
+### 4. Login with Missing Fields (Bad Input)
+POST {{base_url}}/api/v1/Login/Login
+Content-Type: application/json
+
+{
+    "username": "",
+    "password": ""
+}
+
+### Expected response: 400 Bad Request "Username or password is missing"
+
+
+
+### 5. Check Admin Login Status when Logged In (Good Input)
+GET {{base_url}}/api/v1/Login/IsAdminLoggedIn
+
+### Expected response: 200 OK "admin" (or the username stored in the session)
+
+
+
+### 6. Check Admin Login Status when Not Logged In (Bad Input)
+GET {{base_url}}/api/v1/Login/IsAdminLoggedIn
+
+### Expected response: 401 Unauthorized "You are not logged in"
+
+
+
+### 7. Logout when Logged In (Good Input)
+GET {{base_url}}/api/v1/Login/Logout
+
+### Expected response: 200 OK "Logged out"
+
+
+
+### 8. Logout when Not Logged In (Bad Input)
+GET {{base_url}}/api/v1/Login/Logout
+
+### Expected response: 401 Unauthorized "You are not logged in"
