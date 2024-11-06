@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Calendar.Services;
 using Calendar.Models;
+using Calendar.Attributes;
 
 namespace Calendar.Controllers;
 
@@ -42,7 +43,7 @@ public class LoginController : Controller
     public IActionResult Login([FromBody] LoginBody loginBody)
     {
         // TODO: Implement login method
-        if (HttpContext.Session.GetString(ADMIN_SESSION_KEY.adminLoggedIn.ToString()) != null)
+        if (HttpContext.Session.GetString(SESSION_KEY.adminLoggedIn.ToString()) != null)
         {
             return BadRequest("You are already logged in");
         }
@@ -74,14 +75,12 @@ public class LoginController : Controller
         {
             return Ok($"You are logged in as admin user \"{adminLoggedIn}\"");
         }
-        return Unauthorized();
-
-    }
-
         return Unauthorized("You are not logged in");
     }
 
+
     [HttpGet("Logout")]
+    [RoleAuthorize("User")] //an admin is always also a user, so this checks for either log in!
     private IActionResult Logout()
     {
         var sessionKey = _sessionService.GetSessionKey(SESSION_KEY.adminLoggedIn.ToString());
@@ -95,7 +94,7 @@ public class LoginController : Controller
     }
 }
 
-    public class LoginBody
+public class LoginBody
 {
     public string? Username { get; set; }
     public string? Password { get; set; }
