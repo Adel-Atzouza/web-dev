@@ -14,6 +14,11 @@ namespace Calendar
 
             builder.Services.AddDistributedMemoryCache();
 
+            //register the IHttpContextAccessor and ISessionService
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<ILoginService, LoginService>();
+
             builder.Services.AddSession(options => 
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
