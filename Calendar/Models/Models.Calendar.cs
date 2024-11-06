@@ -10,6 +10,8 @@ namespace Calendar.Models
 
         public required string Email { get; set; }
 
+        public required string UserName { get; set; }
+
         public required string Password { get; set; }
 
         // A comma sepparated string that could look like this: "mo,tu,we,th,fr"
@@ -86,4 +88,19 @@ namespace Calendar.Models
 
         public int MaxAttendees {get; set;}
     }
+
+    /// <summary>
+    /// This DTO is used for registration purposes for the user. 
+    /// "Required" attendance (for example) makes it impossible to use the User model
+    /// </summary>
+    public class RegisterUserDto
+    {
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+        public required string Email { get; set; }
+        public required string UserName { get; set; }
+        public required string Password { get; set; }
+    }
+
+
 }
