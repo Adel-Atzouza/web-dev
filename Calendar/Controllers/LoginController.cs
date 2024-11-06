@@ -45,8 +45,11 @@ public class LoginController : Controller
         var adminLoggedIn = HttpContext.Session.GetString(ADMIN_SESSION_KEY.adminLoggedIn.ToString());
         if (adminLoggedIn != null)
         {
-            return Ok(adminLoggedIn);
+            return Ok($"You are logged in as admin user \"{adminLoggedIn}\"");
         }
+
+        return Unauthorized("You are not logged in");
+    }
 
     [HttpGet("Logout")]
     public IActionResult Logout()

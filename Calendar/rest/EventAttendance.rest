@@ -1,0 +1,62 @@
+### Attend Event (Deelname aan evenement)
+POST http://localhost:3000/api/EventAttendance/Attend
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "eventId": 1
+}
+
+###
+
+### Get Event Attendees (Haal deelnemers van een evenement op)
+GET http://localhost:3000/api/EventAttendance/Attendees/1
+Accept: application/json
+
+###
+
+### Cancel Attendance (Annuleer deelname aan evenement)
+DELETE http://localhost:3000/api/EventAttendance/Cancel
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "eventId": 1
+}
+
+###### Submit Review for Event
+POST http://localhost:3000/api/EventAttendance/SubmitReview
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "eventId": 1,
+    "rating": 5,
+    "feedback": "This event was fantastic!"
+}
+
+### Attend Event (Deelname aan evenement)
+POST http://localhost:3000/api/EventAttendance/Attend
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "eventId": 2
+}
+
+### Get Event Recommendations for a User
+GET http://localhost:3000/api/recommendations/3
+Accept: application/json
+
+###
+
+### Get Event Recommendations for a Different User
+GET http://localhost:3000/api/Recommendations/1
+Accept: application/json
+
+###
+
+### Get Event Recommendations for a Non-existent User
+GET http://localhost:3000/api/Recommendations/999
+Accept: application/json
+
