@@ -20,6 +20,11 @@ public class LoginController : Controller
     public IActionResult Login([FromBody] LoginBody loginBody)
     {
         // TODO: Implement login method
+        if (HttpContext.Session.GetString(ADMIN_SESSION_KEY.adminLoggedIn.ToString()) != null)
+        {
+            return BadRequest("You are already logged in");
+        }
+
         if (loginBody == null || string.IsNullOrEmpty(loginBody.Username) || string.IsNullOrEmpty(loginBody.Password))
         {
             return BadRequest("Username or password is missing");
