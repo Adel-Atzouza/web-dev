@@ -1,4 +1,4 @@
-namespace Calendar.Models
+  namespace Calendar.Models
 {
     public class User
     {

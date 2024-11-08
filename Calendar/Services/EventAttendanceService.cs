@@ -47,7 +47,7 @@ namespace Calendar.Services
             }
 
             // Check event availability (based on max attendees)
-            int currentAttendees = await _context.Event_Attendance.CountAsync(ea => ea.Event.EventId == eventId);
+            int currentAttendees = await _context.Event_Attendance.CountAsync(ea => ea.Event.EventId == eventId);//count attendance records 
             if (currentAttendees >= eventToAttend.MaxAttendees)
             {
                 return "Event is full."; // No spots left
@@ -96,17 +96,19 @@ namespace Calendar.Services
             return "Review has been submitted"; // Success message
         }
 
+
         // Method to get a list of attendees for a specific event
         public async Task<List<AttendeeDtogetattendees>> GetEventAttendees(int eventId)
         {
+            // Query for event attendance records matching the given event ID
             return await _context.Event_Attendance
-                .Where(ea => ea.Event.EventId == eventId)
+                .Where(ea => ea.Event.EventId == eventId) // Filter by event ID
                 .Select(ea => new AttendeeDtogetattendees
                 {
-                    FirstName = ea.User.FirstName,
-                    LastName = ea.User.LastName
+                    FirstName = ea.User.FirstName, // Select the first name of the user
+                    LastName = ea.User.LastName // Select the last name of the user
                 })
-                .ToListAsync(); // Return a list of attendee names only
+                .ToListAsync();
         }
 
         // Method to cancel a user's attendance at an event
@@ -124,7 +126,7 @@ namespace Calendar.Services
 
             // Remove the attendance record
             _context.Event_Attendance.Remove(attendance);
-            await _context.SaveChangesAsync(); // Save changes to finalize cancellation
+            await _context.SaveChangesAsync(); // Save changes
 
             return "Attendance canceled."; // Confirmation message
         }

@@ -30,7 +30,7 @@ namespace Calendar.Controllers
             {
                 "Event not found." => NotFound(result), // Couldn’t find the event in the database
                 "Event has already started." => BadRequest(result), // The event has already started
-                "Event is full." => BadRequest(result), // No more seats available
+                "Event is full." => BadRequest(result), // No more available
                 _ => Ok(result) // Success! The user is now attending the event
             };
         }
@@ -53,7 +53,6 @@ namespace Calendar.Controllers
         // GET: api/EventAttendance/Attendees/{eventId}
         // Fetches a list of attendees for a given event
         [HttpGet("Attendees/{eventId}")]
-        // Only allow authorized users to access
         public async Task<IActionResult> GetEventAttendees(int eventId)
         {
             var attendees = await _attendanceService.GetEventAttendees(eventId);

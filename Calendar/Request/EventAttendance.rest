@@ -3,8 +3,8 @@ POST http://localhost:3000/api/EventAttendance/Attend
 Content-Type: application/json
 
 {
-    "userId": 1,
-    "eventId": 1
+    "userId": 100,
+    "eventId": 800
 }
 
 ###
@@ -18,7 +18,6 @@ Accept: application/json
 ### Cancel Attendance (Annuleer deelname aan evenement)
 DELETE http://localhost:3000/api/EventAttendance/Cancel
 Content-Type: application/json
-
 {
     "userId": 1,
     "eventId": 1
@@ -30,7 +29,7 @@ Content-Type: application/json
 
 {
     "userId": 1,
-    "eventId": 1,
+    "eventId": 2,
     "rating": 5,
     "feedback": "This event was fantastic!"
 }
